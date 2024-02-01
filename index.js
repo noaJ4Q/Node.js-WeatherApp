@@ -6,7 +6,12 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const OPEN_WEATHER_API_KEY = process.env.OPEN_WEATHER_API_KEY;
 
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'October', 'November', 'December'];
+const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const DAY_DIFFERENCE = 8; // * 3 hours
+
 let weatherResults;
+let forecastResults = [];
 let latitude = '33.44';
 let longitude = '-94.84';
 
@@ -14,6 +19,8 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended : true}));
 
 app.get('/', async (req, res) => {
+
+    forecastResults = [];
 
     const configWeather = {
         url: '/data/2.5/weather',
@@ -25,29 +32,55 @@ app.get('/', async (req, res) => {
         }
     }
 
-    try{
-        // const response = await axios.request(configWeather);
-        // const data = response.data;
-        // // console.log(data);
+    const configForecast = {
+        url: '/data/2.5/forecast',
+        baseURL: 'https://api.openweathermap.org',
+        params: {
+            lat: latitude,
+            lon: longitude,
+            appid: OPEN_WEATHER_API_KEY
+        }
+    }
 
-        // weatherResults = {
-        //     temp: getTemperature(data.main.temp),
-        //     description: getDescription(data.weather[0].description),
-        //     location: getLocation(data.name),
-        //     date: getDate(),
-        //     wind: getWindSpeed(data.wind.speed),
-        //     humidity: data.main.humidity,
-        //     pressure: data.main.pressure,
-        //     visibility: getVisibility(data.visibility),
-        //     sunrise: getHourFromUnix(data.sys.sunrise),
-        //     sunset: getHourFromUnix(data.sys.sunset)
-        // }
+    try{
+        const [weatherResponse, forecastResponse] = await Promise.all([
+                axios.request(configWeather),
+                axios.request(configForecast)
+            ]);
+
+        const weatherData = weatherResponse.data;
+
+        weatherResults = {
+            temp: getTemperature(weatherData.main.temp),
+            description: getDescription(weatherData.weather[0].description),
+            location: getLocation(weatherData.name),
+            date: getDateFromUnix(weatherData.dt),
+            wind: getWindSpeed(weatherData.wind.speed),
+            humidity: weatherData.main.humidity,
+            pressure: weatherData.main.pressure,
+            visibility: getVisibility(weatherData.visibility),
+            sunrise: getHourFromUnix(weatherData.sys.sunrise),
+            sunset: getHourFromUnix(weatherData.sys.sunset)
+        }
+
+        const forecastData = forecastResponse.data;
+        for (let i = 7; i < forecastData.list.length; i += 8){
+            const weatherDayData = forecastData.list[i];
+
+            const forecastResult = {
+                day: getDayFromUnix(weatherDayData.dt),
+                hour: getHourFromUnix(weatherDayData.dt),
+                temp: getTemperature(weatherDayData.main.temp),
+            }
+            forecastResults.push(forecastResult);
+        }
 
         return res.render('index.ejs', {
-            data: weatherResults
+            dataWeather: weatherResults,
+            dataForecast: forecastResults
         });
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return res.redirect('/');
     }
 
@@ -100,10 +133,6 @@ function getLocation(lowerCaseLocation){
     return lowerCaseLocation.charAt(0).toUpperCase() + lowerCaseLocation.slice(1);
 }
 
-function getDate(){
-    return '28 August Monday';
-}
-
 function getWindSpeed(speedMS){
     return Math.round(speedMS * (18/5));
 }
@@ -115,6 +144,17 @@ function getVisibility(visibilityMeters){
 function getHourFromUnix(unixDate){
     const date = new Date(unixDate*1000);
     const hour = date.toISOString().split('T')[1].slice(0, 5);
-    // console.log(hour);
     return hour;
+}
+
+function getDateFromUnix(unixDate){
+    const date = new Date(unixDate*1000);
+    const day = DAYS[date.getDay()];
+    const month = MONTHS[date.getMonth()];
+    return `${date.getDate()} ${month} ${day}`;
+}
+
+function getDayFromUnix(unixDate){
+    const date = getDateFromUnix(unixDate);
+    return date.split(' ').slice(-1);
 }
