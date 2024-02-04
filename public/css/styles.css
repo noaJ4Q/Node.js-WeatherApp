@@ -95,11 +95,18 @@ input[name='location']:focus{
 .weather-form-suggestion .items{
     background-color: var(--tertiary-color);
     list-style-type: none;
+    padding: .6rem;
 }
 
 .weather-form-suggestion .items > li{
-    padding-block: .4rem;
     cursor: pointer;
+    border-radius: .4rem;
+    padding: .8rem;
+    transition: all 0.3s;
+}
+
+.weather-form-suggestion .items > li:hover{
+    background-color: #647184;
 }
 
 .button-more-options{
