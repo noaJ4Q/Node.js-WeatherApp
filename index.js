@@ -42,47 +42,48 @@ app.get('/', async (req, res) => {
         }
     }
 
-    try{
-        const [weatherResponse, forecastResponse] = await Promise.all([
-                axios.request(configWeather),
-                axios.request(configForecast)
-            ]);
+    // try{
+    //     const [weatherResponse, forecastResponse] = await Promise.all([
+    //             axios.request(configWeather),
+    //             axios.request(configForecast)
+    //         ]);
 
-        const weatherData = weatherResponse.data;
+    //     const weatherData = weatherResponse.data;
 
-        weatherResults = {
-            temp: getTemperature(weatherData.main.temp, 2),
-            description: getDescription(weatherData.weather[0].description),
-            location: getLocation(weatherData.name),
-            date: getDateFromUnix(weatherData.dt),
-            wind: getWindSpeed(weatherData.wind.speed),
-            humidity: weatherData.main.humidity,
-            pressure: weatherData.main.pressure,
-            visibility: getVisibility(weatherData.visibility),
-            sunrise: getHourFromUnix(weatherData.sys.sunrise),
-            sunset: getHourFromUnix(weatherData.sys.sunset)
-        }
+    //     weatherResults = {
+    //         temp: getTemperature(weatherData.main.temp, 2),
+    //         description: getDescription(weatherData.weather[0].description),
+    //         location: getLocation(weatherData.name),
+    //         date: getDateFromUnix(weatherData.dt),
+    //         wind: getWindSpeed(weatherData.wind.speed),
+    //         humidity: weatherData.main.humidity,
+    //         pressure: weatherData.main.pressure,
+    //         visibility: getVisibility(weatherData.visibility),
+    //         sunrise: getHourFromUnix(weatherData.sys.sunrise),
+    //         sunset: getHourFromUnix(weatherData.sys.sunset)
+    //     }
 
-        const forecastData = forecastResponse.data;
-        for (let i = 7; i < forecastData.list.length; i += 8){
-            const weatherDayData = forecastData.list[i];
+    //     const forecastData = forecastResponse.data;
+    //     for (let i = 7; i < forecastData.list.length; i += 8){
+    //         const weatherDayData = forecastData.list[i];
 
-            const forecastResult = {
-                day: getDayFromUnix(weatherDayData.dt),
-                hour: getHourFromUnix(weatherDayData.dt),
-                temp: getTemperature(weatherDayData.main.temp, 1),
-            }
-            forecastResults.push(forecastResult);
-        }
+    //         const forecastResult = {
+    //             day: getDayFromUnix(weatherDayData.dt),
+    //             hour: getHourFromUnix(weatherDayData.dt),
+    //             temp: getTemperature(weatherDayData.main.temp, 1),
+    //         }
+    //         forecastResults.push(forecastResult);
+    //     }
 
-        return res.render('index.ejs', {
-            dataWeather: weatherResults,
-            dataForecast: forecastResults
-        });
-    } catch (error) {
-        console.error(error);
-        return res.redirect('/');
-    }
+    //     return res.render('index.ejs', {
+    //         dataWeather: weatherResults,
+    //         dataForecast: forecastResults
+    //     });
+    // } catch (error) {
+    //     console.error(error);
+    //     return res.redirect('/');
+    // }
+    res.render('index.ejs');
 
 });
 

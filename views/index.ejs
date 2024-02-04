@@ -107,7 +107,7 @@
         </div>
         <div class="weather-result-extra card">
           <% if (locals.dataForecast === undefined) { %>
-          <div>ga</div>
+          <span class="no-data">No data</span>
           <% } else { for (let forecastResult of dataForecast) { %>
           <div class="item">
             <div class="day"><%= forecastResult.day %></div>
@@ -145,5 +145,7 @@
         </div>
       </div>
     </main>
+
+    <script src="js/scripts.js"></script>
   </body>
 </html>

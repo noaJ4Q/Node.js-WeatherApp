@@ -198,6 +198,12 @@ input[name='location']:focus{
     font-size: .75rem;
 }
 
+.weather-result-extra .no-data{
+    text-align: center;
+    grid-row: 3 / 4;
+    margin: auto;
+}
+
 /* RESPONSIVE */
 
 @media (width < 992px){
