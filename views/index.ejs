@@ -19,8 +19,9 @@
   </head>
   <body>
     <main class="card-main">
+      <div class="card button-home-responsive"><i class="fa-solid fa-cloud"></i> weather</div>
       <nav>
-        <span class="card"><i class="fa-solid fa-cloud"></i> weather</span>
+        <span class="card button-home"><i class="fa-solid fa-cloud"></i> weather</span>
         <div class="weather-input card">
           <form id="weather-form" method="post" action="/search">
             <i class="fa-solid fa-magnifying-glass"></i>
@@ -30,10 +31,11 @@
         <button form="weather-form" class="card" type="submit">
           <i class="fa-solid fa-location-crosshairs"></i>
         </button>
-        <span class="card"><i class="fa-regular fa-sun"></i></span>
-        <a class="card-alternative" href="https://github.com/noaJ4Q/NodeJS-WeatherApp.git"
+        <span class="card button-theme"><i class="fa-regular fa-sun"></i></span>
+        <a class="card-alternative button-github" href="https://github.com/noaJ4Q/NodeJS-WeatherApp.git"
           ><i class="fa-brands fa-github"></i
         ></a>
+        <span class="card button-more-options"><i class="fa-solid fa-chevron-down"></i></span>
       </nav>
       <h1 class="weather-title">Today Overview</h1>
       <div class="weather-result">
@@ -104,7 +106,7 @@
           </div>
         </div>
         <div class="weather-result-extra card">
-          <% if (dataForecast.length === 0) { %>
+          <% if (locals.dataForecast === undefined) { %>
           <div>ga</div>
           <% } else { for (let forecastResult of dataForecast) { %>
           <div class="item">
