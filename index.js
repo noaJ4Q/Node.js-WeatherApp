@@ -51,7 +51,7 @@ app.get('/', async (req, res) => {
         const weatherData = weatherResponse.data;
 
         weatherResults = {
-            temp: getTemperature(weatherData.main.temp),
+            temp: getTemperature(weatherData.main.temp, 2),
             description: getDescription(weatherData.weather[0].description),
             location: getLocation(weatherData.name),
             date: getDateFromUnix(weatherData.dt),
@@ -70,7 +70,7 @@ app.get('/', async (req, res) => {
             const forecastResult = {
                 day: getDayFromUnix(weatherDayData.dt),
                 hour: getHourFromUnix(weatherDayData.dt),
-                temp: getTemperature(weatherDayData.main.temp),
+                temp: getTemperature(weatherDayData.main.temp, 1),
             }
             forecastResults.push(forecastResult);
         }
@@ -118,8 +118,8 @@ app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
 });
 
-function getTemperature(temperatureKelvin){
-    return Math.round((temperatureKelvin - 273.15) * 100) / 100;
+function getTemperature(temperatureKelvin, decimals){
+    return Math.round((temperatureKelvin - 273.15) * Math.pow(10, decimals)) / Math.pow(10, decimals);
 }
 
 function getDescription(lowerCaseDescription){

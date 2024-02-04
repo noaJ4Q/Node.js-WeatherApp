@@ -169,7 +169,7 @@ input[name='location']:focus{
 .weather-result-extra .item{
     display: grid;
     grid-template-rows: 1fr 1fr;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 3fr 2fr;
 }
 
 .weather-result-extra .item .temp{
