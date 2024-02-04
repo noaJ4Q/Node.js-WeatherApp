@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Weather app</title>
 
-    <link rel="stylesheet" href="css/styles.css" />
-    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
 
     <!--FONT AWESOME-->
     <link
@@ -22,13 +22,21 @@
       <div class="card button-home-responsive"><i class="fa-solid fa-cloud"></i> weather</div>
       <nav>
         <span class="card button-home"><i class="fa-solid fa-cloud"></i> weather</span>
-        <div class="weather-input card">
-          <form id="weather-form" method="post" action="/search">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" name="location" />
-          </form>
+        <div class="weather-form-wrap">
+          <div class="weather-form card">
+            <form id="weather-form" method="post" action="/search">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input autocomplete="off" type="text" name="location" />
+            </form>
+          </div>
+          <div class="weather-form-suggestion hidden">
+            <ul class="items card">
+              <!-- <li>Suggestion 1</li>
+              <li>Suggestion 2</li> -->
+            </ul>
+          </div>
         </div>
-        <button form="weather-form" class="card" type="submit">
+        <button form="weather-form" class="card weather-form-submit-button" type="submit">
           <i class="fa-solid fa-location-crosshairs"></i>
         </button>
         <span class="card button-theme"><i class="fa-regular fa-sun"></i></span>

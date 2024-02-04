@@ -53,7 +53,6 @@ nav span:first-of-type i{
     padding: 2rem 3rem;
 }
 
-
 .card-alternative{
     border-radius: var(--border-radius);
     background-color: white;
@@ -61,8 +60,9 @@ nav span:first-of-type i{
     padding: .6rem 1rem;
 }
 
-.weather-input{
+.weather-form-wrap{
     flex-grow: 1;
+    position: relative;
 }
 
 #weather-form{
@@ -80,6 +80,26 @@ input[name='location']{
 
 input[name='location']:focus{
     outline: none;
+}
+
+.weather-form-submit-button{
+    cursor: pointer;
+}
+
+.weather-form-suggestion{
+    position: absolute;
+    width: 100%;
+    top: 3.4rem;
+}
+
+.weather-form-suggestion .items{
+    background-color: var(--tertiary-color);
+    list-style-type: none;
+}
+
+.weather-form-suggestion .items > li{
+    padding-block: .4rem;
+    cursor: pointer;
 }
 
 .button-more-options{
@@ -265,4 +285,9 @@ input[name='location']:focus{
         grid-row: auto;
         grid-column: auto;
     }
+}
+
+/* GENERAL */
+.hidden{
+    display: none;
 }
