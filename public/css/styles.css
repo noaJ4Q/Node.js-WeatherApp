@@ -60,6 +60,8 @@ nav span:first-of-type i{
     padding: .6rem 1rem;
 }
 
+/* WEATHER FORM */
+
 .weather-form-wrap{
     flex-grow: 1;
     position: relative;
@@ -86,32 +88,45 @@ input[name='location']:focus{
     cursor: pointer;
 }
 
-.weather-form-suggestion{
+.weather-form-suggestions{
     position: absolute;
     width: 100%;
-    top: 3.4rem;
+    top: 3rem;
 }
 
-.weather-form-suggestion .items{
+.weather-form-suggestions .items{
     background-color: var(--tertiary-color);
     list-style-type: none;
     padding: .6rem;
 }
 
-.weather-form-suggestion .items > li{
+.weather-form-suggestions .items > li{
     cursor: pointer;
     border-radius: .4rem;
     padding: .8rem;
     transition: all 0.3s;
 }
 
-.weather-form-suggestion .items > li:hover{
+.weather-form-suggestions .items > li:hover{
     background-color: #647184;
 }
 
 .button-more-options{
     display: none;
 }
+
+.weather-form-wrap .weather-form-suggestions .items {
+    opacity: 0;
+    display: none;
+}
+
+.show-suggestions .weather-form-suggestions .items {
+    opacity: 1;
+    display: block;
+}
+
+
+/* WEATHER RESULTS */
 
 .weather-title{
     margin-bottom: 1.5rem;
@@ -131,6 +146,8 @@ input[name='location']:focus{
     gap: .8rem;
     margin-bottom: 1.5rem;
 }
+
+/* WEATHER RESULTS MAIN */
 
 .weather-result-main {
     padding: 1.8rem;
@@ -163,6 +180,8 @@ input[name='location']:focus{
     margin-right: .4rem;
 }
 
+/* WEATHER RESULTS SECONDARY */
+
 .weather-result-secondary{
     display: grid;
     grid-template-columns: 12rem 12rem;
@@ -193,6 +212,8 @@ input[name='location']:focus{
 .weather-result-secondary .item > div:nth-of-type(3){
     font-size: 1.1rem;
 }
+
+/* WEATHER RESULTS EXTRA */
 
 .weather-result-extra{
     display: grid;

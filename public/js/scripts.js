@@ -1,24 +1,47 @@
 const form = document.getElementById('weather-form');
-const suggestionsContainer = document.querySelector('.weather-form-suggestion');
-const suggestionsListContainer = document.querySelector('.weather-form-suggestion > .items');
-const weatherLocationInput = document.querySelector('input[name="location"]');
+const searchWrapper = document.querySelector('.weather-form-wrap')
+const resultsWrapper = document.querySelector('.weather-form-suggestions');
+const locationInput = document.querySelector('input[name="location"]');
 
-weatherLocationInput.addEventListener('input', async (event) => {
+locationInput.addEventListener('input', async (event) => {
+    let apiResults = []
     const weatherLocation = event.target.value;
     if (weatherLocation.length) {
-        console.log(weatherLocation);
-        hideSuggestions();
-        const locationAlternatives = await fetchLocations(weatherLocation); // getting location options : array
-        displaySuggestions(locationAlternatives);
+        apiResults = await fetchLocations(weatherLocation); // getting location options : array
+    } else {
+        apiResults = [];
     }
+    //console.log(apiResults);
+    renderResults(apiResults);
+    enableSelectSuggestions();
 });
 
-document.addEventListener('click', (event) => {
-    const clickInsideInput = weatherLocationInput.contains(event.target);
-    if (!clickInsideInput){
-        hideSuggestions();
+// document.addEventListener('click', (event) => {
+//     const clickInsideInput = locationInput.contains(event.target);
+//     if (!clickInsideInput){
+//         renderResults([]);
+//     }
+// })
+
+function enableSelectSuggestions(){
+    const suggestions = document.querySelector('.weather-form-suggestions > .items > li');
+    suggestions.array.forEach(element => {
+        element.addEventListener('click', () => {
+            console.log(element);
+        })
+    });
+}
+
+function renderResults(results){
+    if (!results.length){
+        return searchWrapper.classList.remove('show-suggestions');
     }
-})
+    const content = results.map((item) => {
+        return `<li>${item.name}</li>`;
+    }).join('');
+    searchWrapper.classList.add('show-suggestions');
+    resultsWrapper.innerHTML = `<ul class="items card">${content}</ul>`;
+}
 
 async function fetchLocations(weatherLocation){
     const baseURL = window.location.origin;
@@ -30,18 +53,4 @@ async function fetchLocations(weatherLocation){
     }
     const response = await fetch(url, config);
     return response.json();
-}
-
-function displaySuggestions(suggestions){
-    suggestions.forEach(suggestion => {
-        const listElement = document.createElement('li');
-        listElement.textContent = suggestion.name;
-        suggestionsListContainer.appendChild(listElement);
-    });
-    suggestionsContainer.classList.remove('hidden');
-}
-
-function hideSuggestions(){
-    suggestionsContainer.classList.add('hidden');
-    suggestionsListContainer.innerHTML = '';
 }

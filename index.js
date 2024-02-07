@@ -99,35 +99,35 @@ app.get('/search', async (req, res) => {
         }
     }
 
-    // try {
-    //     const response = await axios.request(configGeocoding);
-    //     const data = response.data;
-    //     console.log(data);
-    //     res.json(data);
+    try {
+        const response = await axios.request(configGeocoding);
+        const data = response.data;
+        console.log(data);
+        res.json(data);
         
-    // } catch (error) {
-    //     console.error('Error:',error);
-    //     res.status(500).json({
-    //         message: 'Error to get location data'
-    //     });
-    // }
+    } catch (error) {
+        console.error('Error:',error);
+        res.status(500).json({
+            message: 'Error to get location data'
+        });
+    }
     
-    res.json([
-        {
-            name: 'Lima',
-            lat: -12.0621065,
-            lon: -77.0365256,
-            country: 'PE',
-            state: 'Lima'
-        },
-        {
-            name: 'Lim',
-            lat: 21.1418999,
-            lon: 106.0207175,
-            country: 'VN',
-            state: 'Bac Ninh province'
-        }
-    ]);
+    // res.json([
+    //     {
+    //         name: 'Lima',
+    //         lat: -12.0621065,
+    //         lon: -77.0365256,
+    //         country: 'PE',
+    //         state: 'Lima'
+    //     },
+    //     {
+    //         name: 'Lim',
+    //         lat: 21.1418999,
+    //         lon: 106.0207175,
+    //         country: 'VN',
+    //         state: 'Bac Ninh province'
+    //     }
+    // ]);
 
 });
 
