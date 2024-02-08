@@ -12,8 +12,8 @@ const DAY_DIFFERENCE = 8; // * 3 hours
 
 let weatherResults;
 let forecastResults = [];
-let latitude = '33.44';
-let longitude = '-94.84';
+let latitude;
+let longitude;
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended : true}));
@@ -42,49 +42,51 @@ app.get('/', async (req, res) => {
         }
     }
 
-    // try{
-    //     const [weatherResponse, forecastResponse] = await Promise.all([
-    //             axios.request(configWeather),
-    //             axios.request(configForecast)
-    //         ]);
+    if (!latitude && !longitude){
+        return res.render('index.ejs');
+    }
 
-    //     const weatherData = weatherResponse.data;
+    try{
+        const [weatherResponse, forecastResponse] = await Promise.all([
+                axios.request(configWeather),
+                axios.request(configForecast)
+            ]);
 
-    //     weatherResults = {
-    //         temp: getTemperature(weatherData.main.temp, 2),
-    //         description: getDescription(weatherData.weather[0].description),
-    //         location: getLocation(weatherData.name),
-    //         date: getDateFromUnix(weatherData.dt),
-    //         wind: getWindSpeed(weatherData.wind.speed),
-    //         humidity: weatherData.main.humidity,
-    //         pressure: weatherData.main.pressure,
-    //         visibility: getVisibility(weatherData.visibility),
-    //         sunrise: getHourFromUnix(weatherData.sys.sunrise),
-    //         sunset: getHourFromUnix(weatherData.sys.sunset)
-    //     }
+        const weatherData = weatherResponse.data;
 
-    //     const forecastData = forecastResponse.data;
-    //     for (let i = 7; i < forecastData.list.length; i += 8){
-    //         const weatherDayData = forecastData.list[i];
+        weatherResults = {
+            temp: getTemperature(weatherData.main.temp, 2),
+            description: getDescription(weatherData.weather[0].description),
+            location: getLocation(weatherData.name),
+            date: getDateFromUnix(weatherData.dt),
+            wind: getWindSpeed(weatherData.wind.speed),
+            humidity: weatherData.main.humidity,
+            pressure: weatherData.main.pressure,
+            visibility: getVisibility(weatherData.visibility),
+            sunrise: getHourFromUnix(weatherData.sys.sunrise),
+            sunset: getHourFromUnix(weatherData.sys.sunset)
+        }
 
-    //         const forecastResult = {
-    //             day: getDayFromUnix(weatherDayData.dt),
-    //             hour: getHourFromUnix(weatherDayData.dt),
-    //             temp: getTemperature(weatherDayData.main.temp, 1),
-    //         }
-    //         forecastResults.push(forecastResult);
-    //     }
+        const forecastData = forecastResponse.data;
+        for (let i = 7; i < forecastData.list.length; i += 8){
+            const weatherDayData = forecastData.list[i];
 
-    //     return res.render('index.ejs', {
-    //         dataWeather: weatherResults,
-    //         dataForecast: forecastResults
-    //     });
-    // } catch (error) {
-    //     console.error(error);
-    //     return res.redirect('/');
-    // }
-    res.render('index.ejs');
+            const forecastResult = {
+                day: getDayFromUnix(weatherDayData.dt),
+                hour: getHourFromUnix(weatherDayData.dt),
+                temp: getTemperature(weatherDayData.main.temp, 1),
+            }
+            forecastResults.push(forecastResult);
+        }
 
+        return res.render('index.ejs', {
+            dataWeather: weatherResults,
+            dataForecast: forecastResults
+        });
+    } catch (error) {
+        console.error(error);
+        return res.redirect('/');
+    }
 });
 
 app.get('/search', async (req, res) => {
@@ -102,7 +104,7 @@ app.get('/search', async (req, res) => {
     try {
         const response = await axios.request(configGeocoding);
         const data = response.data;
-        console.log(data);
+        //console.log(data);
         res.json(data);
         
     } catch (error) {
@@ -111,28 +113,16 @@ app.get('/search', async (req, res) => {
             message: 'Error to get location data'
         });
     }
-    
-    // res.json([
-    //     {
-    //         name: 'Lima',
-    //         lat: -12.0621065,
-    //         lon: -77.0365256,
-    //         country: 'PE',
-    //         state: 'Lima'
-    //     },
-    //     {
-    //         name: 'Lim',
-    //         lat: 21.1418999,
-    //         lon: 106.0207175,
-    //         country: 'VN',
-    //         state: 'Bac Ninh province'
-    //     }
-    // ]);
-
 });
 
 app.post('/search', async (req, res) => {
     const location = req.body.location;
+
+    if (location === undefined) {
+        latitude = req.body.lat;
+        longitude = req.body.lon;
+        return res.redirect('/');
+    }
 
     const configGeocoding = {
         url: '/geo/1.0/direct',
@@ -146,7 +136,7 @@ app.post('/search', async (req, res) => {
     try {
         const response = await axios.request(configGeocoding);
         const data = response.data[0];
-        console.log(data);
+        //console.log(data);
         latitude = data.lat;
         longitude = data.lon;
 

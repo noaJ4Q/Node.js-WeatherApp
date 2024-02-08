@@ -11,7 +11,6 @@ locationInput.addEventListener('input', async (event) => {
     } else {
         apiResults = [];
     }
-    //console.log(apiResults);
     renderResults(apiResults);
     enableSelectSuggestions();
 });
@@ -24,10 +23,20 @@ locationInput.addEventListener('input', async (event) => {
 // })
 
 function enableSelectSuggestions(){
-    const suggestions = document.querySelector('.weather-form-suggestions > .items > li');
-    suggestions.array.forEach(element => {
+    const suggestionsHTML = document.querySelector('.weather-form-suggestions > .items > li');
+    const suggestions = [suggestionsHTML];
+    suggestions.forEach(element => {
         element.addEventListener('click', () => {
-            console.log(element);
+            const lat = element.getAttribute('data-lat');
+            const lon = element.getAttribute('data-lon');
+            
+            const latitudeInput = document.querySelector('input[name="lat"]');
+            const longitudeInput = document.querySelector('input[name="lon"]');
+
+            latitudeInput.value = lat;
+            longitudeInput.value = lon;
+
+            form.submit();
         })
     });
 }
@@ -37,7 +46,7 @@ function renderResults(results){
         return searchWrapper.classList.remove('show-suggestions');
     }
     const content = results.map((item) => {
-        return `<li>${item.name}</li>`;
+        return `<li data-lat="${item.lat}" data-lon="${item.lon}">${item.name}</li>`;
     }).join('');
     searchWrapper.classList.add('show-suggestions');
     resultsWrapper.innerHTML = `<ul class="items card">${content}</ul>`;

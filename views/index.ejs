@@ -26,6 +26,8 @@
           <div class="weather-form card">
             <form id="weather-form" method="post" action="/search">
               <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="hidden" name="lat">
+              <input type="hidden" name="lon">
               <input autocomplete="off" type="text" name="location" />
             </form>
           </div>
@@ -41,7 +43,7 @@
           <i class="fa-solid fa-location-crosshairs"></i>
         </button>
         <span class="card button-theme"><i class="fa-regular fa-sun"></i></span>
-        <a class="card-alternative button-github" href="https://github.com/noaJ4Q/NodeJS-WeatherApp.git"
+        <a target="_blank" class="card-alternative button-github" href="https://github.com/noaJ4Q/NodeJS-WeatherApp.git"
           ><i class="fa-brands fa-github"></i
         ></a>
         <span class="card button-more-options"><i class="fa-solid fa-chevron-down"></i></span>
