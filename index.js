@@ -55,7 +55,7 @@ app.get('/', async (req, res) => {
         const weatherData = weatherResponse.data;
 
         weatherResults = {
-            temp: getTemperature(weatherData.main.temp, 2),
+            temp: getTemperature(weatherData.main.temp, 1),
             description: getDescription(weatherData.weather[0].description),
             location: getLocation(weatherData.name),
             date: getDateFromUnix(weatherData.dt),
@@ -68,7 +68,7 @@ app.get('/', async (req, res) => {
         }
 
         const forecastData = forecastResponse.data;
-        for (let i = 7; i < forecastData.list.length; i += 8){
+        for (let i = 7; i < forecastData.list.length; i += DAY_DIFFERENCE){
             const weatherDayData = forecastData.list[i];
 
             const forecastResult = {

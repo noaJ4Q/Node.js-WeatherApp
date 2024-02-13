@@ -3,16 +3,22 @@ const searchWrapper = document.querySelector('.weather-form-wrap')
 const resultsWrapper = document.querySelector('.weather-form-suggestions');
 const locationInput = document.querySelector('input[name="location"]');
 
+let searchTimer;
 locationInput.addEventListener('input', async (event) => {
-    let apiResults = []
-    const weatherLocation = event.target.value;
-    if (weatherLocation.length) {
-        apiResults = await fetchLocations(weatherLocation); // getting location options : array
-    } else {
-        apiResults = [];
-    }
-    renderResults(apiResults);
-    enableSelectSuggestions();
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(async () => {
+
+        let apiResults = []
+        const weatherLocation = event.target.value;
+        if (weatherLocation.length) {
+            apiResults = await fetchLocations(weatherLocation); // getting location options : array
+        } else {
+            apiResults = [];
+        }
+        renderResults(apiResults);
+        enableSelectSuggestions();
+
+    }, 1000);
 });
 
 // document.addEventListener('click', (event) => {

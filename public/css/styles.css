@@ -142,9 +142,19 @@ input[name='location']:focus{
 
 .weather-result{
     display: grid;
-    grid-template-columns: 12rem 1fr 12rem;
+    grid-template-columns: 12.2rem 1fr 12.2rem;
     gap: .8rem;
     margin-bottom: 1.5rem;
+}
+
+.weather-result .card {
+    /* add animation */
+    border: 1px solid var(--main-color);
+    transition: border 0.3s;
+}
+
+.weather-result .card:hover {
+    border: 1px solid white;
 }
 
 /* WEATHER RESULTS MAIN */
@@ -192,7 +202,7 @@ input[name='location']:focus{
 .weather-result-secondary .item{
     display: grid;
     grid-template-rows: 1fr 1fr;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 2fr 3fr;
     padding-block: 1.2rem;
 }
 
@@ -201,7 +211,6 @@ input[name='location']:focus{
     grid-row-end: 3;
     display: grid;
     place-items: center;
-    margin-right: 1rem;
     font-size: 1.4rem;
 }
 
@@ -297,7 +306,7 @@ input[name='location']:focus{
 
 @media (width < 600px){
     body{
-        padding: 2rem;
+        padding: 1rem;
     }   
 
     .card-main{
@@ -312,6 +321,10 @@ input[name='location']:focus{
     .weather-result-secondary{
         grid-row: auto;
         grid-column: auto;
+    }
+
+    .weather-result-secondary .card {
+        padding: .8rem;
     }
 }
 
